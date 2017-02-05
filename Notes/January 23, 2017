@@ -1,0 +1,96 @@
+Primitives (ES5)			//everything else is an object and is reference type
+	string				
+	number
+	bool  (true/false)
+	null
+	undefined
+
+var node = new Object();
+node.next = null;
+node.previous = null;
+node.value = 42;
+
+// or
+
+var node = {
+	next: null,
+	previous: null,
+	value: 42
+};
+
+JSON 					// JavaScript Object Notation
+	Used to describe objects in JavaScript
+
+Arrays
+	var arr = new Array();		// Arrays in JS are dynamic lists
+	arr.push(42);
+	arr.push(76);
+	arr.push(22);
+
+	//or
+	var arr = [42, 76, 22];
+
+
+	arr = [];
+
+	var arr2 = ["Hello", []]	// Array elements can be of any type
+
+
+Functions
+
+// C# functions have to be in a class, not here! They're implicitly global
+// Functions are objects in JS
+
+function ABC(num)	
+{
+	if (num === undefined) {
+		alert("Problem...");
+	}
+
+	return function() { alert("Hello"); };
+}
+
+var f = ABC;
+f();
+
+var Demo
+
+<html>
+<script>
+function A()
+{
+	var x = 5;
+	alert("x = " + x);
+}
+
+function B()
+{
+	x = 6;
+	alert("x = " + x);
+}
+
+</script>
+
+<input type="button" value="Call Function A" onclick="A()" />
+<input type="button" value="Call Function B" onclick="B()" />
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

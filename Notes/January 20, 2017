@@ -1,0 +1,37 @@
+JavaScript  (The most misunderstodd programming language)
+
+Working primarily with ES5 compliant JS code so it works on all major browsers.
+Certain features of ES6 simply sugar-coat features of ES5
+
+Dynamically typed
+	"Everything" is just var
+		Ex: var x = 6; 
+			var y = "Hello World";
+			x = y;
+
+Variables are Objects or Primitives (Reference or Value types)
+	
+	var x = 6; 				// type of x is "number"    -> IEEE 754 double-precision floating point (64bit)
+	var s = "Hello"; 		// type of s is string
+	var s2 = s;				// strings are immutable
+	s.replace("H", "J");
+
+// JS
+for (var i = 0; i < 3; i++) {
+	alert(i);				// creates popup window in browser with a single string
+}
+
+// C++
+string *s = new string("Hello");
+
+// C#
+string s = new string("Hello");
+
+// JS
+function ABC()
+{
+	var obj = new Object();	// obj allocated
+	obj.x = 42;				// x added as member variable
+	obj.y = obj;
+	// or obj["y"] = obj;
+}

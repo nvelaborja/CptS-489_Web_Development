@@ -1,0 +1,18 @@
+*Homework help: For remove, remove first instance of that value.
+
+JavaScript
+	Everything is either primitive or reference-type object
+	Want to use var always for varialbe declarations
+	==	Can change types
+	===	Will not change types
+
+	var obj1 = { Name: "Bob" };
+	var obj2 = obj1;
+	obj2.Name = "Joe";
+	alert(obj1.Name);
+
+	var value = 101;
+	var root = new Object();
+	root.value = v;
+	root.left = root.right = null; 
+

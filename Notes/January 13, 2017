@@ -1,0 +1,21 @@
+CSS (Cascading Style Sheet)
+	A textual language for describing how a web page is styled for visual representation
+
+CSS Rule
+	a CSS rule consists of a selector, an opening curly brace, a declaration block, and a closing curly brace
+
+Declaration Block
+	Contains one of more declarations seperated by a semicolons
+
+Selector
+	Specifies the HTML elements to which the specific style rule apply
+
+Ex:
+
+<html>
+	<div style="color: red; background-color: green; border: 10px solid blue; color: white; height:100%">This is a content inside a div tag</div>
+	<br>
+	<span style="color: white; background-color: black">This is a content inside a span tag</span>
+
+	<!-- <p style="webkit-linear-gradient: 255 to 66; linear-gradient: 255 to 66">Blah</p> -->
+</html>

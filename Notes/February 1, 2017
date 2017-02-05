@@ -1,0 +1,54 @@
+Recall
+	Prototypes and prototype chain
+	Member lookup process
+
+
+// C#
+class Animal { string Name; }
+class Cat : Animal { ... }
+class Dog : Animal { ... }
+
+// JS
+function Animal (name) { 
+	if (name === undefined) 
+		name = "unknown animal";
+
+	this.name = name;
+}
+
+function Cat() {
+	// Manually call base constructor
+	Animal.call(this, "Cat");
+}
+
+Animal.prototype.name = "unknownAnimal";
+
+
+// Test
+function Animal () {
+
+}
+
+Animal.prototype.Name = "unknownAnimal";
+
+Animal.prototype.toString = function() {
+	return this.name;
+};
+
+var a = new Animal();
+alert(a.Name);
+a.Name = "Changed it";
+alert(a.Name);
+a.toString = function() {
+	return this.Name;
+};
+
+var a2 = new Animal();
+alert(a2.Name);
+alert(a2.toString());
+
+
+function Cat() {
+	Animal.call(this);
+	this.isCat = true;
+}

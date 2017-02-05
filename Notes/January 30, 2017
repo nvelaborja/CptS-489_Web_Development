@@ -1,0 +1,49 @@
+Prototypes
+	All objects have a prototype (member reference to an object) (which also has a prototype and so forth...)
+	Used to resolve member access
+	Prototype chain (key concept)
+
+	var obj = new Object();
+	obj.x = 42;
+	// Hidden // __proto__   // Not always named exactly this.
+	|
+	|
+	v
+	toString() -> function		// Appears as property of obj through prototype (like inheritance)
+	valueOf() -> function
+
+
+bool PropertyLookup(obj, propName) {	// Pseudo code alg of how property lookup happens in JS
+	if obj === null reutrn false;
+	if obj has own property (propName) return true;
+	return PropertyLookup(obj.proto, propName);
+}
+
+Global Object 
+	Global variables are properties of the global object
+	Window is the global object (for web apps)
+	All non-nested functions are members of the global object
+	
+
+Constructors
+	Function
+	Name of class
+	Purpose to initialize member variables					BST -> | prototype | --> | add    | --> function
+																   | __proto__ |	 | remove | --> function
+	var tree = new BST();															   ^
+	tree.add(42);											tree --> | m_root    |     |
+																	 | __proto__ | ----/
+	function BST() {
+		this.m_root = null;
+
+		this.add = function(value) { ... };
+	}
+
+	BST.prototype.add = function(value) {
+		...
+	}
+
+	BST.prototype.remove = function(value) {
+		...
+	}
+

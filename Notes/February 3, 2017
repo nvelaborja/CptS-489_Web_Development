@@ -1,0 +1,28 @@
+// More inheritance examples
+
+function Animal () {
+	this.Name = "unknown"; 
+	this.Alive = true;
+}
+
+Animal.prototype.makeSound = function () {
+	alert("unknown");
+}
+
+Animal.prototype.isAlive = function () {
+	return this.Alive;
+}
+
+function Cat () {
+	Animal.call(this);
+}
+
+Cat.prototype = Animal.prototype;
+Cat.prototype.MakeSound = function() {
+	alert("Meoew");
+}
+
+// MDN definition
+object.create(prototype [, properties]):
+	// The object.create method creates a new object with the specified prototype object
+	// and properties
