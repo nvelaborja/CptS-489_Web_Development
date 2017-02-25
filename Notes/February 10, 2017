@@ -1,0 +1,51 @@
+Red-Black Tree remove/delete node (use wikipedia rules, will clarify in today's lecture)
+
+	1. If node has 2 children
+		Swap max from left subtree
+		Recursively delete max
+	2. If node is red (has 1 or 0 children)
+		return RegularBSTRemove(node);
+	3. (Node is black) 
+		PrepareForRemove(node);
+		return RegularBSTRemove(node);
+
+
+
+
+
+	PrepareForRemove(node) {
+		1. Node is root
+		if (node.parent === null) {
+			return;
+		}
+
+		2. Sibling is red
+			Rotate on P
+			Make sibling black
+			Make parent red
+			Fall through
+
+		3. P, S and S's children (All children black)
+			Paint S red
+			return PrepareForRemove(P)
+
+		4. S and S's children black, P red
+			P -> black
+			S -> red
+			return
+
+		5. S black, S's left child red, S's right child black, N is left child of parent
+
+			a. 
+
+			b. 
+
+		6. 
+
+			a. 
+
+			b. 
+
+
+
+	}

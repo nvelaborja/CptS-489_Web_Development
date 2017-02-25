@@ -1,0 +1,50 @@
+JS / Page Interaction
+
+Document Object Model (DOM)
+	Tree data structure representing the page
+
+	// Getting tree elements
+	var element = document.getElementById("infoDIV");
+
+	// Getting root of tree
+	var node = document.body;
+
+<input> element
+	<input type="button" on[...]="JSCmd()" />
+
+jQuery
+
+
+
+
+// Traversing tree
+
+var resultDIV = document.getElementById("infoDIV");
+var node = document.body;
+
+/*
+resultDIV.innerHTML = "Type: " + node.toString() + "<br>";
+for (var prop in node) {
+	resultDIV.innerHTML += prop = "<br>";
+}
+*/
+
+var str = showNodeInfo(node, resultDIV, "");
+resultDIV.innerHTML = str;
+
+function showNodeInfo(node, resultDIV, prefix) {
+
+	if (!node.childNodes) 
+		return;
+
+	var str = "";
+	for (var i = 0; i < node.childNodes.length; i++) {
+		var child = node.childNodes[i];
+
+		str += (prefix + child.toString() + "<br>");
+
+		str += showNodeInfo(child, resultDIV, prefix + "&nbsp;&nbsp;&nbsp;&nbsp;")
+	}
+
+	resultDIV.innerHTML += str;
+}

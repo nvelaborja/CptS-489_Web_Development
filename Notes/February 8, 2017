@@ -1,0 +1,61 @@
+Red-Black Tree Properties
+	Every node is either red or black
+	Root node must be black
+	All (non-existant) "null leaves" are black
+	All red nodes have only black children
+	Every path from a node to any descendant leaf node has same number of black nodes
+
+Red-Black Tree Insert/Add
+	Normal BST insertion, creating new node N
+	Paint N red
+	Balance (N)
+
+Balance (node) 
+	case 1: 
+		node is root -> paint node black, return true
+	case 2: 
+		node parent is black -> return true
+	For remaining cases: 
+		let p = parent of N
+			u = uncle of N
+			g = grandparent of N
+
+		// P is red
+		// G is black
+		// U can be black red or null (black)
+
+	Case 3: P and U are red
+		Change P and U to black
+		Change G to red
+		return Balance (G)
+
+	Case 4: Double rotation cases
+		// P is left of G, N is right of P
+		rotateLeft(P)
+
+
+		// P is right of G, N is left of P
+		rotateRight(P)
+
+		goto: Case 5
+
+	Case 5: Single rotation cases
+		// P is left of G, N is left of P
+		rotateRight(G)
+		return true
+
+		// P is right of G, N is right of P
+		rotateLeft(G)
+		return true
+
+	Utility Functions:
+
+		rotateLeft(A):
+
+		rotateRight(A):
+
+
+
+// Using a function's call function
+callback(A,B);
+callback.call(this, A, B);

@@ -1,0 +1,47 @@
+
+
+<html>
+
+<script type="text/javascript">
+	
+	function PointXY(x, y) {
+		//this.x = x;
+		//this.y = y;
+		var myX = x;
+
+		//Object.defineProperty(this, "x", {enumberable: false, configurable: false, value: x, writable: true });
+		Object.defineProperty(this, "y", {enumberable: false, configurable: false, value: y});
+
+
+		var xGet = function() { return myX; }
+
+		Object.defineProperty(this, "X", {enumberable: true, configurable: false, get: xGet });
+
+		this.myMemberFunc() {
+			myX = 100;
+		};
+	}
+
+
+</script>
+
+
+<body>
+</body>
+</html>
+
+
+
+// Console
+
+var pt1 = new PointXY(10, 20);
+
+pt1.x += 5;
+
+delete pt1.y;		// Removes properties from an object
+
+Object.defineProperty(obj, prop, descriptor);
+
+for (var propName in pt1) {
+	console.log(propName);
+}

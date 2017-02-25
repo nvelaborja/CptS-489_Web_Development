@@ -1,0 +1,109 @@
+
+
+<html>
+
+<script type="text/javascript">
+	
+	function PointXY(x, y) {
+		//this.x = x;
+		//this.y = y;
+		var myX = x;
+
+		//Object.defineProperty(this, "x", {enumberable: false, configurable: false, value: x, writable: true });
+		Object.defineProperty(this, "y", {enumberable: false, configurable: false, value: y});
+
+
+		//var xGet = function() { return myX; }
+
+		//Object.defineProperty(this, "X", {enumberable: true, configurable: false, get: xGet });
+
+		this.setX(xValue) {
+			if (xValue >= 0) {
+				myX = xValue;
+			}
+		};
+
+		this.getX() {
+			return myX;
+		};
+	}
+
+
+</script>
+
+
+<body>
+</body>
+</html>
+
+
+
+// Console
+
+var pt1 = new PointXY(10, 20);
+
+pt1.x += 5;
+
+delete pt1.y;		// Removes properties from an object
+
+Object.defineProperty(obj, prop, descriptor);
+
+for (var propName in pt1) {
+	console.log(propName);
+}
+
+
+
+
+// Homework 3 code
+<script>
+function Set489() {
+	// Setup inheritance
+	
+	BST.call(this, compareFunc);
+
+}
+
+// Setup inheritance
+Set489.prototype = Object.create(BST.prototype)
+
+// Override add
+Set489.prototype.add = function(value) {
+	var node = BST.prototype.addNode.call(this, value);
+}
+
+var mySet = new Set489(null);
+mySet.add(42);
+
+function makeGetValue(value) {
+	return function() {
+		return value;
+	}
+}
+
+var funcs = new Array();
+
+for (var i = 0; i < 3; i++) {
+	var iCopy = i;
+	funcs[i] = function() {
+		return iCopy;
+	}
+}
+
+for (var j = 0; j < 3; j++) {
+	alert(function[j]());
+}
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

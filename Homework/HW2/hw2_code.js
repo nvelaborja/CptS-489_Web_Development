@@ -15,8 +15,6 @@ function BST(compareFunction) {
 
 	this.add = function(value) {
 
-		//alert("Add " + value.toString());
-
 		// First make sure value is legit
 		if (value == null || value === undefined) {
 			return false;
@@ -79,7 +77,7 @@ function BST(compareFunction) {
 	};
 
 	this.addLL = function (node) {
-		//alert("AddLL " + node.value.toString());
+
 		var lastNode = this.m_last;
 
 		lastNode.next = node;
@@ -88,7 +86,7 @@ function BST(compareFunction) {
 	}
 
 	this.removeLL = function (node) {
-		//alert("RemoveLL " + node.value.toString());
+
 		var left = node.previous;
 		var right = node.next;
 
@@ -103,6 +101,7 @@ function BST(compareFunction) {
 
 	// Replaces node1 with node2 in LL
 	this.replaceLL = function(node1, node2) {
+
 		node2.previous = node1.previous;
 		node2.next = node1.next;
 
@@ -123,11 +122,11 @@ function BST(compareFunction) {
 
 	// Return a node count. This implementation will use the linked list
 	this.count = function() {
-		//alert("Count");
+
 		if (this.m_root == null)
 			return 0;
 
-		var navNode = this.m_root;
+		var navNode = this.m_first;
 		var count = 1;
 
 		while (navNode.next != null) {
@@ -139,7 +138,7 @@ function BST(compareFunction) {
 	}
 
 	this.getLevel = function(value) {
-		//alert("Get Level");
+
 		var level = 0;
 		var navNode = this.m_root;
 
@@ -169,7 +168,7 @@ function BST(compareFunction) {
 
 	// Traverse down the right side of the tree to find max value
 	this.getMax = function() {
-		//alert("Get Max");
+
 		var navNode = this.m_root;
 
 		if (navNode == null) 
@@ -184,7 +183,7 @@ function BST(compareFunction) {
 
 	// Traverse down the left side of the tree to find min value
 	this.getMin = function() {
-		//alert("Get Min");
+
 		var navNode = this.m_root;
 
 		if (navNode == null) 
@@ -199,9 +198,8 @@ function BST(compareFunction) {
 
 	// Searches tree for given value
 	this.has = function(value) {
-		//alert("Has " + value.toString());
-		// Lazy implementation, if we can get the level it must exist
 
+		// Lazy implementation, if we can get the level it must exist
 		var level = this.getLevel(value);
 
 		if (level != -1) 
@@ -211,7 +209,7 @@ function BST(compareFunction) {
 	}
 
 	this.remove = function(value) {
-		//alert("Remove " + value.toString());
+
 		// Check to see if value exists
 		if (!this.has(value)) 
 			return false;
@@ -243,11 +241,10 @@ function BST(compareFunction) {
 		var childState = this.getChildState(navNode);
 
 		if (childState == -1) {		// Node failure
-			//alert("Childstate " + childState.toString());
 			return false;
 		}
 		else if (childState == 0) {		// No children
-			//alert("Childstate " + childState.toString());
+
 			// Simply remove reference to node from parent
 			switch (parentSide) {
 				case "left":
@@ -268,7 +265,7 @@ function BST(compareFunction) {
 			return true;
 		}
 		else if (childState == 1) {		// Left child only
-			//alert("Childstate " + childState.toString());
+
 			// Simply have left child replace navNode
 			switch (parentSide) {
 				case "left":
@@ -281,6 +278,7 @@ function BST(compareFunction) {
 					break;
 				case "noParent": 			// Indicates removing root node
 					this.m_root = navNode.left;
+					this.m_root.parent = null;
 
 			}
 
@@ -291,7 +289,7 @@ function BST(compareFunction) {
 			return true;
 		}
 		else if (childState == 2) {		// Right child only
-			//alert("Childstate " + childState.toString());
+
 			// Simply have left child replace navNode
 			switch (parentSide) {
 				case "left":
@@ -304,6 +302,7 @@ function BST(compareFunction) {
 					break;
 				case "noParent": 			// Indicates removing root node
 					this.m_root = navNode.right;
+					this.m_root.parent = null;
 			}
 
 			// Remove node form linked list
@@ -313,7 +312,7 @@ function BST(compareFunction) {
 			return true;
 		}
 		else if (childState == 3) {		// Both children
-			//alert("Childstate " + childState.toString());
+
 			// Need to replace navNode with right-most child
 
 			var largestLeftChild = navNode.left;
@@ -367,7 +366,7 @@ function BST(compareFunction) {
 	}
 
 	this.toString = function(delimiter) {
-		//alert("toString " + delimiter);
+
 		var dl = delimiter;
 		if (dl == null || dc === undefined)
 			dl = " ";
@@ -379,13 +378,13 @@ function BST(compareFunction) {
 		var navNode = this.m_root;
 
 		while (navNode != null) {
-			//alert("POOP1" + navNode.value.toString());
+
 			stack.push(navNode);
 			navNode = navNode.left;
 		}
 
 		while (stack.length > 0) {
-			//alert("POOP2");
+
 			navNode = stack.pop();
 
 			string += navNode.value.toString() + dl.toString();
@@ -394,7 +393,7 @@ function BST(compareFunction) {
 				navNode = navNode.right;
 
 				while (navNode != null) {
-					//alert("POOP3");
+
 					stack.push(navNode);
 					navNode = navNode.left;
 				}
@@ -408,11 +407,11 @@ function BST(compareFunction) {
 	}
 
 	this.forEach = function(callback, useInsertionOrder) {
-		//alert("forEach " + callback.toString() + useInsertionOrder.toString());
+
 		if (callback == null || callback === undefined)
 			return false;
 
-		var inorder = (useInsertionOrder) ? true : false;
+		var inorder = (useInsertionOrder) ? false : true;
 
 		if (inorder) {
 			// Run in-order traversal 
@@ -477,8 +476,6 @@ function BST(compareFunction) {
 	}
 
 }
-
-// and more of your code down here
 
 // Creates an instance of a BST Node
 function BSTNode(value) {

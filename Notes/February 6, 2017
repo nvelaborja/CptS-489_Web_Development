@@ -1,0 +1,27 @@
+Red-Black Trees
+	Why?
+
+	Compare to hash set
+		Set in ES6 uses ===
+
+	Basic Properties / Ops.
+
+	Implementation Notes
+		Inherit from BST
+
+Red-Black Tree Properties
+	Is a balanced BST
+	log(n) worst case for (insert / remove / find / search)*
+	Every node is either red or black
+	Root node is black
+	All empty (null) leaves are black
+	If a node is red, both child nodes must be black
+	Every path from any node to any null-black-leaf node beneathe it has the same number of black nodes
+
+Red-Black Tree Insertion
+	Start with normal BST insertion, mark newNode red
+	Balance(newNode)
+
+Balance (node)
+	If node is root, make it black then return
+	If node's parent is black, return true
