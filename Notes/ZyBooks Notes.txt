@@ -1,0 +1,497 @@
+Chapter 2 - HTML
+
+	HTML 		- HyperText Markup Language
+	HyperText 	- Text that contains connections to other documents
+	Markup 		- Part of a document that explains how to interpret or structure other parts of the document
+	Language	- A set of rules describing how to write HTML
+	Element 	- a single HTML structure
+	tag			- a markup instruction identified by < Tag Name >
+	HTML validator - Checks that an HTML document conforms to the standard
+
+	HTML page structure
+		<!DOCTYPE html>
+		<html>
+			<meta >
+			<title></title>
+			<body></body>
+		</html>
+
+	Whitespace
+		- Unprinted character such as the spaces between words
+		- Browsers treat all sequences of whitespace as a single space between non-whitespace chars
+
+	Various tags
+		<cite> tag denotes a title <cite>Spaceballs</cite>
+		<mark> tag denotes content that is important and should be highlighted <mark>due today</mark>
+		<var> tag defines a variable in a computer program <var>variable</var>
+		<kbd> tag... "keyboard input" <kbd>keyboard</kbd>
+		<code> tag denotes computer code <code>code</code>
+		<samp> tag denotes a sample output from a computer <samp>sample</samp>
+
+	Comments
+		<!-- anything -->
+
+	Tables
+		- Contained within <table></table> tags
+		- Define new rows using <tr></tr> tags
+		- Within rows, declare headers or data using <th></th> and <td></td> tags, respectively
+		- Can define a table caption right after table declaration using <caption></caption> tags
+		- Table cells can span multiple rows or columns using colspan and rowspan in the <td> or <th> tags (<td colspan="3"> or <th rowspan="5">)
+		- Table header and footer designed to add style to table elements 
+			- <thead> <tr>....</tr> </thead>
+			- <tfoot> <tr>....</tr> </tfoot>
+
+	Images
+		<img src="url" alt="Text description">
+			- src specifies URL location of the image file to display
+			- alt provides a text description to use if the image can't display
+			- can change with and height using width="10px" and height="50px" attributes
+
+	Links
+		- Anchor tag <a> defines a hyperlink in a web page
+		- <a href="http:whatever.com">Click here to go to whatever.com</a>
+		- Can use mailto:name@email.com in anchor 
+		- A URL can point to a section or fragment of a document by adding a hashtag and identifier to the end of a URL. ex: "http:whatever.com/some/directory#History"
+		- Relative URLS
+			- <a href="../index.html">Home</a>
+
+	Special Characters
+		- Entities are used for writing special chars or symbols in HTML.
+		- Can use entity name, decimal number, or hex to describe the same char
+			- &copy; == &#169; == &#x000A9 -> ©
+
+
+Chapter 3 - More HTML
+
+	Containers
+		- A container is any part of web document body that has opening and closing tags
+			- <header></header>
+			- <footer></footer>
+			- <section></section>
+			- <article></article>
+			- <nav></nav>
+			- <aside></aside>
+			- <div></div>
+			- <span></span>
+		- A block tag's contnet tries to fill the width of the parent's container. 
+			- Includes headings, tables, and paragraphs
+		- A <div> tag is a generic tag for creating block containers to facilitate managing page content. Has no semantic meaning.
+		- A inline tag's content tries to fill the minimum space possible in the tag's parent container and can only contain text or other inline tags.
+		- The <span> tag is the generic tag for creating inline containers to facilitate managing content on the page.
+
+	Forms
+		- The <form> tag allows the web broswer to send information from the user to the server.
+		- It has two primary attributes
+			- The action attribute indicates the URL where the form data should be sent
+			- The method attribute indicates the HTTP request type the browser will use to communicate with the server (either GET or POST)
+
+	Widgets
+		- A widget is an interactive component (usually graphical) that the browser uses to interact with a user.
+			- Buttons, drop-down menu, data-entry fields, etc.
+		- The <input> tag allows the user to enter information to the web page
+			- 5 primary attributes
+				- type, name, id, placeholder, and value
+		- The <label> tag displays descriptive text associated with a specific widget.
+			- Has an attribute named "for" with a value of the id of the widget it is associated with
+			- <label for="username">Username:</label>
+			- <input type="text" id="username">
+
+		- A text box is a single line text entry created by <input type="text">
+		- A text area is a multi-line text entry created by the <textarea> tag
+		- A drop-down menu is created by the <select> tag
+			- Menu items are created by embedding <option> tags in the <select> container
+		- HTML5 Widgets
+			- <input> "type" attributes date, color, number, range
+		- A fallback is a mechanism that allows a web page element to function correctly even if the browser does not support a particular element. 
+		- A polyfill is a fallback using JavaScipt code that makes certain features of HTML5 work on browsers that do not natively support those HTML5 features.
+
+	<script> and <style>
+
+
+Chapter 4 - Basic CSS
+
+	Using CSS in HTML
+		- CSS (Cascading Style Sheets) is a textual language for describing how a web page is styled visually
+		- A CSS rule consists of a selector and a declaration block
+		- A CSS selector specifies the HTML elements to which the block applies.
+		- A declaration block contains one or more declarations separated by semicolons.
+		- A CSS styling declaration indicates what value is assigned to a styling property
+			- property : value;
+
+	Basic Selectors
+		- Element Selector -> p {color: blue;} selects all p elements
+		- Class name selectgor -> .notice {color: blue;} selects all elements with a notice class attribute
+		- ID name selector -> #byLine {color: blue;} select the element with the id "byLine"
+		- Descendant selector -> h2 em {color: blue;} selects all em elements contained in h2 elements
+		- Pseudo-class selector -> :hover {color: blue;} selects elements under the mouse cursor
+
+	Advanced Selectors
+		- Universal selector -> * {color: blue;} matches all elements. Can also do *. or *#
+		- Multiple selector -> ul, ol {color: blue;} matches both ul and ol elements
+		- Child selector -> p > em {color: blue;} matches em elements who are a direct child of a p element
+		- Sibling selector -> h1 ~ p {color: blue;} matches p elements who are the sibling of an h1 element
+		- Adjacent sibling selector -> h1 + p {color: blue;} matches p elements who is the very next sibling of an h1 element
+		- Combinators are any of these selectors that match specific relationships between other selectors. ex. Descendant, child, siblings
+		- Attribute selector -> a[target="_blank"] {color: blue;} matches a elements with attribute target value "_blank"
+		- Pseudo element selector -> p::first-line {color: red;} matches the first line of a p element
+			- Also ::first-letter and ::selection
+
+	Common Properties
+		- Common CSS properties
+			- color
+			- background
+			- font
+			- float, clear
+			- text-align
+			- display
+		- Color
+			- RGB -> rgb(255, 255, 0)
+			- Hex -> #00FF44
+			- HSL -> hsl(120, 100%, 50%)
+			- RGBA -> rgba(44, 128, 255, 0.4)
+		- Background properties
+			- backgorund-color
+			- background-image
+			- background
+		- Font
+			- font-family
+			- font-size
+			- font-weight
+			- font-style
+			- font-variant
+			- font
+		- Float
+			- float specifies whether the element will float to the left or the right of the element's parent
+			- clear property moves an element down to avoid previously floated elements on the left right or both sides
+		- Text-align
+			- left, right, center, justify
+		- Display
+			- inline, block, none, inline-block, list-item
+
+	Box Model
+		- Content
+		- Padding
+		- Border
+			- Styles -> solid, dashed, dotted, none, double
+		- Margin
+
+
+Chapter 5 - Advanced CSS
+	
+	Positioning Elements
+		- The CSS position property gives developers more control over where elements should appear
+			- static - default
+			- relative - positions the element relative to the default position
+			- fixed - positions the element relative to the viewport in a fixed location
+			- absolute - positions the element relative to the nearest positioned ancestor
+		- A viewport is the visible area of the web page
+		- The CSS z-index property is used to specify layer ordering
+
+	Special Effects
+		- Text Shadow
+			- offset-x -> horizontal pixel offset of shadow
+			- offset-y -> vertical pixel offset of shadow
+			- blur-radius -> optional shadow blur
+			- color -> optional shadow color
+		- Box shadow - adds a shadow to the box around an element
+			- inset -> optional value that darws the shadow inside the box
+			- offset-x -> same
+			- offset-y -> same
+			- blur-radius -> same
+			- spread-radius -> positive value causes shadow to grow, negative to shrink
+			- color -> same
+		- Rounded corners - border-radius
+			- single value -> all four corners same
+			- two values -> first is top left and bottom right, second is top right and bottom left
+			- three values -> first value is top left, second is other three
+			- four values -> first value is top left, second is top right, third is bottom right, fourth is bottom left
+		- Border image - renders an elements border using sections of an image
+			- border-image-source -> image url
+			- border-image-height -> image section height
+			- border-image-width -> image section width
+			- border-image-repeat -> "repeat" to repeat the image section, "round" to repeat the image section but resize the image if needed to fit
+		- Vendor prefix - a prefix added to an experimental or nonstandard CSS property that only works on a specific browser
+			- webkit- for Chrome, Safari, and newer versions of Opera
+			- -mox- for Firefox
+			- -ms- for Internet Explorer
+			- -o- for older versions of Opera
+		- Linear gradients
+			- linear-gradient(color1, color2)
+			- repeating-linear-gradient()
+		- Radial gradients
+			- radial-gradient(color1, color2)
+
+	Animation
+		- A CSS animation transforms an element's style over a set time period
+		- The @keyframes rule defines a keyframe list.
+		- A keyframe list has a name and contains the keyframes or the properties and values that will be animated
+			- from -> the animation starting state
+			- to -> the animation ending state
+		- animation-name -> Names the keygrame list associated with the animation
+		- animation-duration -> Length of the animation
+		- Transitions are defined with the transition property and are commonly used with the :hover pseduo-class to trigger an animation when the use mouses over an element
+			- The transition-timing-function property controls the speed of the transition
+				- ease
+				- linear
+				- ease-in
+				- ease-out
+				- ease-in-out
+				- cubic-bezier(n1,n2,n3,n4)
+		- Transformations are defined with the transform property and applies a 2D or 3D tansformation to an element
+			- translate(x,y)
+			- scale(x,y)
+			- rotate(angle)
+
+	Page Layout
+		-Fluid Layout - used by many sites to allow a web page to scale dynamically to fit any browser width
+			- Header at the top
+			- Navigation links at the top or left side
+			- Various sections that include related content
+			- Footer at the bottom that contains info
+		- Multi-column Layout
+			- column-count specifies the number of columns in an element
+			- column-width property specifies the minimum column width
+
+
+Chapter 6 - Basic JavaScript
+	
+	Syntax and Variables
+		- JavaScript is executed by an interpreter
+		- An interpreter executes programming statements without first compiling the statements into machine language.
+		- Modern JavaScript interpreters use JIT compilation to compile the JavaScript code at execution into another format that can be executed quickly
+		- Dynamic typing determines a variable's type at run-time
+		- A constant is an initialized variable whose value cannot change
+			- ES6 has const keyword
+
+	Arithmetic
+		- parseInt() and parseFloat() convert strings into numbers
+		- isNan() returns true if the argument is not a number, false otherwise
+		- Examples
+			- 10 + "ten" = "10ten"
+			- "3" / "6" = 0.5
+			- "3" + 5 * 2 = "310"
+			- parseFloat("3.2") + parseInt("2.7") = 5.2
+			- 3 + parseInt("pig") = NaN
+			- 2 + isNaN("oink") + isNaN("5") = 3
+
+	Functions
+		- In JS, function expressions are not hoisted. Hoisting is moving variable declarations to the top of the current scope.
+		- Variables declared in a function have local scope, so only the function that defines a variable has access to them
+		- Variables declared outisde a function have global scope, and all functions have access to a global variable
+		- Anonymous functions are functions taht do not have a name. They are normally assigned to a variable for calling, but they can also call themself
+		- A self-invoking function is an anonymous function that calls itself
+
+	Arrays
+		- .push(value) - adds a value to the end of the array
+		- .pop() - removes the last array element and returns it
+		- .unshift(value) adds a value to the beginning of the array
+		- .shift() removes the first array element and returns the element
+		- .splice(startingIndex, totalElementsToDelete, values to Add) - adds or removes elements from anywhere in the array and returns the deleted elements (if any)
+		- .length
+		- .forEach(function(item, index))
+		- the for-in loop iterates over the index of an array
+		- the for-of loop iterates over iterable objects like an array
+		- .indexOf()
+		- .lastIndexOf()
+		- .sort()
+
+	String, Date, and Math
+		- String
+			- .charAt(index)
+			- .length
+			- .indexOf(searchStr)
+			- .replace(search, replacement)
+			- .substr(startIndex, [length])
+			- .substring(startIndex, [lastIndex])
+		- Date
+			- new Date(); gets current datetime
+			- .getDate(), .setDate()
+			- .getDay()
+			- .getFullYear(), .setFullYear()
+			- .getMilliseconds(), .setMilliseconds()
+			...
+		- Math
+			- Math.PI
+			- Math.E
+			- Math.SQRT2
+			- Math.LOG10E
+			- Math.LN2
+			- Math.random() -> pseudo random number between 0-1
+
+Chapter 7 - JavaScript in the Browser
+
+	Window Object
+		- window.location
+		- window.navigator
+		- window.innerHeight and .innerWidth
+		- window.alert()
+		- window.confirm()
+		- window.open()
+
+	DOM
+		- document.getElementById()
+		- document.getElementsByTagName()
+		- document.getElementByClassName()
+		- documents.querySelectorAll()
+		- documents.querySelector()
+		- .nextSibling, .prevSibling
+
+	Timers
+		- setTimeout(event, timeDelay)
+		- clearTimeout(uid)
+		- setInterval(timeout, handler)
+		- clearInterval(uid)
+
+	JSON
+		- JSON.parse(jsonString) -> return object
+		- JSON.stringify(object) -> returns JSON string representing object
+
+	Ajax
+		- A technique to asynchronously communicate with a server and update a web page once the response is reieved without reloading the whole web page
+
+Chapter 8 - Advanced JavaScript
+
+	Regular Expressions
+		- Selected special characters
+			- * -> preceding character 0 or more times
+			- + -> preceding character 1 or more times
+			- ? -> preceding character 0 or 1 time
+			- ^ -> beginning of string
+			- $ -> end of string
+			- | -> OR
+		- Metacharacters
+			-  . -> any single character besides newline
+			- \w -> any word characters (alphanum and underscore)
+			- \W -> any non-word character
+			- \d -> any digit
+			- \D -> any non-digit
+			- \s -> any whitespace character
+			- \S -> any non-whitespace character
+
+	Classes
+		- A JS class uses a constructor function to define the characteristics of an object
+		- A constructor function is a function that initializes properties of a new object
+		- Every object is associated with a second object called the prototype
+			- The prototype object contains properties that an associated object inherits when the associated object is created. 
+			- When the new keyword is used, the object is assigned the prototype property that is associated with the constructor function
+		- Private properties can be simulated by creating local variables in a constructor function with getters and setters to get and set the properties
+		- A closure is a special object that maintains a function's local variables and values after the function has retured. 
+		- Inheritance
+			- Child class calls the parent class's constructor function from the child's constructor function using the .call() method
+			- The Object.create() method copies the parent's prototype, and the new copy is assigned to the child's prototype to give the child class the same functionality as the parent
+			- The child class's prototype.constructor is explicitly set to the child's constructor function
+
+	Strict Mode
+		- Makes a JS interpreter apply a set of restrictive syntax rules to JS code. 
+		- "use strict"; in any scope you want it to apply to
+
+	Canvas Drawing
+		- <canvas> html tag defines a rectangular area of a web page where shapes, images, and text can be displayed using JS. 
+		- The canvas' context object represents the drawing surface of the canvas.
+		- var canvas = document.getElementById("canvas");
+		  var context = canvac.getContext("2d");
+		- Rectangle methods/props
+			- fillRect(x, y, width, height);
+			- fillStyle
+			- lineWidth
+			- strokeRect(x, y, width, height);
+			- strokeStyle
+		- Paths
+			- .beginPath()
+			- .moveTo(x, y)
+			- .lineTo(x, y)
+			- .closePath()
+			- fill()
+			- fillStyle
+			- stroke()
+			- strokeStyle
+		- Arcs
+			- .arc(x, y, radius, startAngle, endAngle, [anticlockwise])
+		- Images
+			- .drawImage(image, x, y, [width], [height])
+		- Text
+			- .fillText(text, x, y)
+			- .strokeText(text, x, y)
+			- .textAlign
+			- .textBase
+			- .font
+
+	Canvas Transformations and Animation
+		- Transformation
+			- .translate(x,y)
+			- .rotate(angle)
+			- .scale(horizontalMult, verticalMult)
+		- Animation
+			- .clearRect()
+			- .save()
+			- draw graphics
+			- .restore()
+			- repeat
+			- The window.requestAnimationFrame(callback) mehtod can be used to repeatedly re-draw the canvas. The callback function is automatically called by the JS interpreter 60/s
+
+	WebSockets
+		- Polling is a technique where the client sends an Ajax request periodically to the web server asking if any new data is available
+		- The WebSocket protocol runs over a single TCP connection and allows real-tinme communication between servers and browsers.
+		- WebSocket handshake to establish connection
+			- Connection - Value set to "Upgrade"
+			- Sec-WebSocket-Key - String produced by the clint and used by the server to produce a Sec-WebSocket-Accept string that the client expects in the response
+			- Upgrade - Request to upgrade from HTTP to WebSocket protocol
+			- If server accepts the connection request, it responds with a handshake response containing a 101 status code and several headers.
+
+
+Chapter 9 - Query
+	
+	Basics
+		- Library vs. Framework
+			- A library is a collection of functions that focus on a related set of tasks
+			- A framework is a suite of libraries designed to offer a better platform in which to program
+		- Including the jQuery library
+			- <script src="jquery-2.1.4.min.js"></script>
+			- <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+		- Queries
+			- var $jqobj = jQuery(DOMObject)
+			- var $jqobj = $(document.getElementById("hello"));
+
+	Selectors
+		- Adding classes 
+			- var $allPElements = $("p");
+			- $allPElements.addClass("important");
+			- or $("p").addClass("important");
+		- Element -> $("p")
+		- ID -> $("#hello")
+		- Class -> $(".important")
+
+	Events
+		- Regular JS
+			- document.getElementById("button").addEventListener("click", callback)
+		- jQuery
+			- $("#button").on("click", callback);  OR
+			- $("#button").click(callback);
+
+	CSS 
+		- $("body").css("background-color", "peachpuff");
+
+	Animation
+		- show, hide, toggle, fadeIn, fadeOut, fadeToggle, slideDown, slideUp, slideToggle
+		- The .queue() function helps queue animation code to run when current animations are finished
+		- $("h1").hide("slow").queue(function(next) { ... next(); })
+		- .animate(map of property:values to animate, duration, [easing function], [callback])
+
+	DOM Manipulation
+		- .attr("src", "star.png")
+		- .remove() removes DOM node from tree
+		- .detach() removes DOM node and returns it
+		- .html() gets and sets inner html of element
+
+	Ajax
+		- .load() to asynch load content into element
+		- $.get() and $.post()
+		- Error codes cause the .fail() method to be called
+
+	Plugins
+
+
+
+
+
+

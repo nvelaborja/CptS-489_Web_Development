@@ -1,0 +1,13 @@
+Midterm Friday!
+	- 1 page both sides notes
+
+var f = (function () { alert(this.value); }).value = 42;
+
+Freeze vs. Seal
+Enumerable
+Prototype chain
+RB Trees
+
+var f = (function () { alert(this.value); });
+f.value = 42;
+

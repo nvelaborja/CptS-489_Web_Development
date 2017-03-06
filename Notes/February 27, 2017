@@ -1,0 +1,23 @@
+// Manual drawing on a webpage
+
+function init() {
+	
+	var myParam = 42;
+
+	makeFunc(myParam);
+	setTimeout(function() { render(myParam); }, 50);
+}
+
+function render(num) {
+	
+	var c = document.getElementById("drawHere");
+	var rect = c.getBoundingClientRect();
+	var context = c.getContent("2d");
+
+	// First clear everything
+	context.fillStyle = ((i++) % 2 == 0) ? "#FF0000" : "#0000FF";
+	context.fillRect(0, 0, rect.width, rect.height);
+
+	// Call next frame
+	setTimeout(render, 50);
+}

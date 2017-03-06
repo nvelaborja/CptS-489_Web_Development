@@ -1,0 +1,379 @@
+HTML  
+  Forms
+    - The <form> tag allows the web broswer to send information from the user to the server.
+    - It has two primary attributes
+      - The action attribute indicates the URL where the form data should be sent
+      - The method attribute indicates the HTTP request type the browser will use to communicate with the server (either GET or POST)
+
+  Widgets
+    - A widget is an interactive component (usually graphical) that the browser uses to interact with a user.
+      - Buttons, drop-down menu, data-entry fields, etc.
+    - The <input> tag allows the user to enter information to the web page
+      - 5 primary attributes
+        - type, name, id, placeholder, and value
+    - The <label> tag displays descriptive text associated with a specific widget.
+      - Has an attribute named "for" with a value of the id of the widget it is associated with
+      - <label for="username">Username:</label>
+      - <input type="text" id="username">
+
+    - A text box is a single line text entry created by <input type="text">
+    - A text area is a multi-line text entry created by the <textarea> tag
+    - A drop-down menu is created by the <select> tag
+      - Menu items are created by embedding <option> tags in the <select> container
+    - HTML5 Widgets
+      - <input> "type" attributes date, color, number, range
+    - A fallback is a mechanism that allows a web page element to function correctly even if the browser does not support a particular element. 
+    - A polyfill is a fallback using JavaScipt code that makes certain features of HTML5 work on browsers that do not natively support those HTML5 features.
+
+CSS
+  Advanced Selectors
+    - Universal selector -> * {color: blue;} matches all elements. Can also do *. or *#
+    - Multiple selector -> ul, ol {color: blue;} matches both ul and ol elements
+    - Child selector -> p > em {color: blue;} matches em elements who are a direct child of a p element
+    - Sibling selector -> h1 ~ p {color: blue;} matches p elements who are the sibling of an h1 element
+    - Adjacent sibling selector -> h1 + p {color: blue;} matches p elements who is the very next sibling of an h1 element
+    - Combinators are any of these selectors that match specific relationships between other selectors. ex. Descendant, child, siblings
+    - Attribute selector -> a[target="_blank"] {color: blue;} matches a elements with attribute target value "_blank"
+    - Pseudo element selector -> p::first-line {color: red;} matches the first line of a p element
+      - Also ::first-letter and ::selection
+
+Chapter 5 - Advanced CSS
+
+  Animation
+    - A CSS animation transforms an element's style over a set time period
+    - The @keyframes rule defines a keyframe list.
+    - A keyframe list has a name and contains the keyframes or the properties and values that will be animated
+      - from -> the animation starting state
+      - to -> the animation ending state
+    - animation-name -> Names the keygrame list associated with the animation
+    - animation-duration -> Length of the animation
+    - Transitions are defined with the transition property and are commonly used with the :hover pseduo-class to trigger an animation when the use mouses over an element
+      - The transition-timing-function property controls the speed of the transition
+        - ease
+        - linear
+        - ease-in
+        - ease-out
+        - ease-in-out
+        - cubic-bezier(n1,n2,n3,n4)
+    - Transformations are defined with the transform property and applies a 2D or 3D tansformation to an element
+      - translate(x,y)
+      - scale(x,y)
+      - rotate(angle)
+
+  Page Layout
+    -Fluid Layout - used by many sites to allow a web page to scale dynamically to fit any browser width
+      - Header at the top
+      - Navigation links at the top or left side
+      - Various sections that include related content
+      - Footer at the bottom that contains info
+    - Multi-column Layout
+      - column-count specifies the number of columns in an element
+      - column-width property specifies the minimum column width
+
+
+Chapter 6 - Basic JavaScript
+  
+  Arithmetic
+    - parseInt() and parseFloat() convert strings into numbers
+    - isNan() returns true if the argument is not a number, false otherwise
+    - Examples
+      - 10 + "ten" = "10ten"
+      - "3" / "6" = 0.5
+      - "3" + 5 * 2 = "310"
+      - parseFloat("3.2") + parseInt("2.7") = 5.2
+      - 3 + parseInt("pig") = NaN
+      - 2 + isNaN("oink") + isNaN("5") = 3
+
+  Arrays
+    - .push(value) - adds a value to the end of the array
+    - .pop() - removes the last array element and returns it
+    - .unshift(value) adds a value to the beginning of the array
+    - .shift() removes the first array element and returns the element
+    - .splice(startingIndex, totalElementsToDelete, values to Add) - adds or removes elements from anywhere in the array and returns the deleted elements (if any)
+    - .length
+    - .forEach(function(item, index))
+    - the for-in loop iterates over the index of an array
+    - the for-of loop iterates over iterable objects like an array
+    - .indexOf()
+    - .lastIndexOf()
+    - .sort()
+
+Chapter 7 - JavaScript in the Browser
+
+  Window Object
+    - window.location
+    - window.navigator
+    - window.innerHeight and .innerWidth
+    - window.alert()
+    - window.confirm()
+    - window.open()
+
+  DOM
+    - document.getElementById()
+    - document.getElementsByTagName()
+    - document.getElementByClassName()
+    - documents.querySelectorAll()
+    - documents.querySelector()
+    - .nextSibling, .prevSibling
+
+  Timers
+    - setTimeout(event, timeDelay)
+    - clearTimeout(uid)
+    - setInterval(timeout, handler)
+    - clearInterval(uid)
+
+  JSON
+    - JSON.parse(jsonString) -> return object
+    - JSON.stringify(object) -> returns JSON string representing object
+
+Chapter 9 - Query
+  
+  Basics
+    - Library vs. Framework
+      - A library is a collection of functions that focus on a related set of tasks
+      - A framework is a suite of libraries designed to offer a better platform in which to program
+    - Including the jQuery library
+      - <script src="jquery-2.1.4.min.js"></script>
+      - <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    - Queries
+      - var $jqobj = jQuery(DOMObject)
+      - var $jqobj = $(document.getElementById("hello"));
+
+  Selectors
+    - Adding classes 
+      - var $allPElements = $("p");
+      - $allPElements.addClass("important");
+      - or $("p").addClass("important");
+    - Element -> $("p")
+    - ID -> $("#hello")
+    - Class -> $(".important")
+
+  Events
+    - Regular JS
+      - document.getElementById("button").addEventListener("click", callback)
+    - jQuery
+      - $("#button").on("click", callback);  OR
+      - $("#button").click(callback);
+
+  CSS 
+    - $("body").css("background-color", "peachpuff");
+
+  Animation
+    - show, hide, toggle, fadeIn, fadeOut, fadeToggle, slideDown, slideUp, slideToggle
+    - The .queue() function helps queue animation code to run when current animations are finished
+    - $("h1").hide("slow").queue(function(next) { ... next(); })
+    - .animate(map of property:values to animate, duration, [easing function], [callback])
+
+  DOM Manipulation
+    - .attr("src", "star.png")
+    - .remove() removes DOM node from tree
+    - .detach() removes DOM node and returns it
+    - .html() gets and sets inner html of element
+
+  Ajax
+    - .load() to asynch load content into element
+    - $.get() and $.post()
+    - Error codes cause the .fail() method to be called
+
+  Plugins
+
+Red-Black Tree Properties
+  Every node is either red or black
+  Root node must be black
+  All (non-existant) "null leaves" are black
+  All red nodes have only black children
+  Every path from a node to any descendant leaf node has same number of black nodes
+
+Red-Black Tree Insert/Add
+  Normal BST insertion, creating new node N
+  Paint N red
+  Balance (N)
+
+Balance (node) 
+  case 1: 
+    node is root -> paint node black, return true
+  case 2: 
+    node parent is black -> return true
+  For remaining cases: 
+    let p = parent of N
+      u = uncle of N
+      g = grandparent of N
+    // P is red, G is black, U can be black red or null (black)
+
+  Case 3: P and U are red
+    Change P and U to black
+    Change G to red
+    return Balance (G)
+
+  Case 4: Double rotation cases
+    // P is left of G, N is right of P
+    rotateLeft(P)
+    // P is right of G, N is left of P
+    rotateRight(P)
+    goto: Case 5
+
+  Case 5: Single rotation cases
+    // P is left of G, N is left of P
+    rotateRight(G)
+    return true
+
+    // P is right of G, N is right of P
+    rotateLeft(G)
+    return true
+
+  Utility Functions:
+
+    Set489.prototype.rotateRight = function(node) {
+      var left = node.left;
+
+      node.left = left.right;
+      if (left.right !== null) {
+        left.right.parent = node;
+      }
+
+      left.parent = node.parent;
+      if (node.parent === null) {
+        this.m_root = left;
+      }
+      else {
+        if (this.m_compare(this.valueOf(node), this.valueOf(node.parent.left)) == 0) {
+          node.parent.left = left;
+        }
+        else {
+          node.parent.right = left;
+        }
+      }
+
+      left.right = node;
+      node.parent = left;
+    }
+    Set489.prototype.rotateLeft = function(node) {
+      var right = node.right;
+
+      node.right = right.left;
+      if (right.left !== null) {
+        right.left.parent = node;
+      }
+
+      right.parent = node.parent;
+      if (node.parent === null) {
+        this.m_root = right;
+      }
+      else {
+        if (this.m_compare(this.valueOf(node), this.valueOf(node.parent.left)) == 0) {
+          node.parent.left = right;
+        }
+        else {
+          node.parent.right = right;
+        }
+      }
+
+      right.left = node;
+      node.parent = right;
+    }
+
+Red-Black Tree remove/delete node (use wikipedia rules, will clarify in today's lecture)
+
+  1. If node has 2 children
+    Swap max from left subtree
+    Recursively delete max
+  2. If node is red (has 1 or 0 children)
+    return RegularBSTRemove(node);
+  3. (Node is black) 
+    PrepareForRemove(node);
+    return RegularBSTRemove(node);
+
+  PrepareForRemove(node) {
+    1. Node is root
+    if (node.parent === null) {
+      return;
+    }
+
+    2. Sibling is red
+      Rotate on P
+      Make sibling black
+      Make parent red
+      Fall through
+
+    3. P, S and S's children (All children black)
+      Paint S red
+      return PrepareForRemove(P)
+
+    4. S and S's children black, P red
+      P -> black
+      S -> red
+      return
+
+    5. S black, S's left child red, S's right child black, N is left child of parent
+
+      a. 
+
+      b. 
+
+    6. 
+
+      a. 
+
+      b. 
+
+.defineProperty and private
+
+function PointXY(x, y) {
+  //this.x = x;
+  //this.y = y;
+  var myX = x;
+
+  //Object.defineProperty(this, "x", {enumberable: false, configurable: false, value: x, writable: true });
+  Object.defineProperty(this, "y", {enumberable: false, configurable: false, value: y});
+
+  var xGet = function() { return myX; }
+
+  Object.defineProperty(this, "X", {enumberable: true, configurable: false, get: xGet });
+
+  this.myMemberFunc() {
+    myX = 100;
+  };
+}
+
+Inheritance
+function Set489() {
+  BST.call(this, compareFunc);
+}
+// Setup inheritance
+Set489.prototype = Object.create(BST.prototype)
+// Override add
+Set489.prototype.add = function(value)
+// Call base method
+BST.add.call(this, value)
+
+Animation
+function init() {
+  
+  var myParam = 42;
+
+  makeFunc(myParam);
+  setTimeout(function() { render(myParam); }, 50);
+}
+
+function render(num) {
+  
+  var c = document.getElementById("drawHere");
+  var rect = c.getBoundingClientRect();
+  var context = c.getContent("2d");
+
+  // First clear everything
+  context.fillStyle = ((i++) % 2 == 0) ? "#FF0000" : "#0000FF";
+  context.fillRect(0, 0, rect.width, rect.height);
+
+  // Call next frame
+  setTimeout(render, 50);
+}
+
+Freeze
+The Object.freeze() method freezes an object: that is, prevents new properties from being added to it; prevents existing properties from being removed; and prevents existing properties, or their enumerability, configurability, or writability, from being changed.  The method returns the object being frozen.
+
+Seal
+The Object.seal() method seals an object, preventing new properties from being added to it and marking all existing properties as non-configurable. Values of present properties can still be changed as long as they are writable.
+
+Configurable
+The configurable attribute controls at the same time whether the property can be deleted from the object and whether its attributes (other than writable) can be changed.
