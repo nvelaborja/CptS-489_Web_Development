@@ -1,0 +1,61 @@
+
+- Server-side programming with Node.js
+- Calendar (on syllabus) updated
+
+
+Client
+	Browser
+		HTML
+		CSS
+		JS
+
+
+Server
+	Node.js
+	Standard server code
+	Web services (JSON / XML)
+
+
+Node.js
+	Runtime environment
+	App that runs a server on your machine, then tie in JS applications to handle functions
+	Name of executable: node
+	global object: global, not window
+		for (var name in global) 
+			console.log(name);
+	control C twice to exit console
+
+
+Hello World Node.js
+
+	var http = require("http");		// Imports http module
+	// Others: require("fs");
+	var handler = function(request, response) {
+		response.writeHead(200, {"Content-Type": "text/html"});
+
+		response.write("<html><body>Node.js request object properties:");
+		response.write("<table border="2">");
+
+		// Write the enumerable properties of the request object
+		var arr = new Array();
+		for (var name in request) {
+			var propValStr = "";
+			if (request[name] !== undefined && request[name] !== null) {
+				if (request[name].toString !== undefined) {
+					propValStr = request[name].toString();
+				}
+			}
+			rarr.push("<tr><td>" + name + "</td><td> " + propValStr + "</td></tr>";
+		}
+		arr.sort();
+		for (var item of arr) {
+			response.write(item);
+		}
+
+		response.end("</table></body></html>");
+	};
+	http.createServer(handler).listen(8080);
+	console.log("Server running at http://127.0.0.1:8080/");
+
+	// Add to Node.js
+	node filename

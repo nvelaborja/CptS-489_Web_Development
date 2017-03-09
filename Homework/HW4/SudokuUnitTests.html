@@ -1,5 +1,5 @@
 <html>
-<title>Sudoku Units Tests v1</title>
+<title>Sudoku Units Tests v1.3</title>
 <script src="Sudoku9x9.js"></script>
 <script>
 function AllTests()
@@ -432,15 +432,23 @@ function TestSudokuCell(resultsDIV)
     cell = new SudokuCell(9);
     passCount = 0;
     // Make sure it has the necessary properties
-    if (cell.isFinalized === undefined ||
-        cell.finalizedValue === undefined ||
-        cell.removePossibilities == undefined)
-    {
-        resultsDIV.innerHTML += "<font color='red'>FAIL: Instantiated cell is missing one or move of the " +
-            "following properties: isFinalized, finalizedValue, removePossibilities<br>" +
-            "0% of tests from this group passed</font><br>";
-        return;
-    }
+	var neededPropNames = ["isFinalized", "finalizedValue", "removePossibilities"];
+	var currentPropNames = new Array();
+	for (var propName in cell) { currentPropNames.push(propName); }
+    for (var i = 0; i < neededPropNames.length; i++)
+	{
+		if (currentPropNames.indexOf(neededPropNames[i]) === -1)
+		{
+			resultsDIV.innerHTML += "<font color='red'>FAIL: Instantiated cell is missing enumerable \"" +
+				neededPropNames[i] + "\" property<br>0% of tests from this group passed</font><br>";
+			return;
+		}
+		else
+		{
+			resultsDIV.innerHTML += "<font color='green'>OK: Instantiated cell has enumerable \"" + 
+				neededPropNames[i] + "\" property</font><br>";
+		}
+	}
     
     // Test setting the finalized value
     cell.finalizedValue = 2;
