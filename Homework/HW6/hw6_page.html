@@ -1,0 +1,220 @@
+<!-- Nathan VelaBorja -->
+<!-- 11392441         -->
+<!-- March 27, 2017   -->
+
+<!-- If you use additional .js files, make sure to reference them in this file and -->
+<!-- include them in your submission (zip all files together). -->
+<html>
+    
+<script>
+    
+// Helpful links:
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+    
+var g_animating = false;
+var g_colors = ["red", "green", "blue", "yellow", "cyan", "magenta", "orange", "white"];
+var g_objs = new Array();
+var shift = false;
+var canvasWidth = 0;
+var canvasHeight = 0;
+function init()
+{
+    // Setup event listeners
+    var canvas = document.getElementById("drawHere");
+    canvas.addEventListener("click", canvasClick);
+
+	// You may add any necessary initialization code here
+    canvasWidth = canvas.width;
+    canvasHeight = canvas.height;
+
+    // Do initial rendering
+    render();
+}
+
+function btnStartStopClick()
+{
+    // Toggle animation on/off
+    // When stopping the animation, all objects freeze in their current position
+    // When resuming the animation, all objects move from their current position (i.e.
+    // they don't all of a sudden jump halfway across the canvas, they move from their
+    // frozen location).
+    g_animating = !g_animating;
+    if (g_animating) { render(); }
+}
+
+function canvasClick(event)
+{
+    var newCircle = event.shiftKey ? new StaticCircle(event.clientX - this.offsetLeft, event.clientY - this.offsetTop) : new ActiveCircle(event.clientX - this.offsetLeft, event.clientY - this.offsetTop);
+    g_objs.push(newCircle);
+
+    // Draw immediately if animating is off
+    if (!g_animating) {
+        var canvas = document.getElementById("drawHere");
+        var context = canvas.getContext("2d");
+        drawObject(context, newCircle);
+    }
+
+    return;
+}
+                            
+function render()
+{   
+    var canvas = document.getElementById("drawHere");
+    var context = canvas.getContext("2d");
+
+    // Clear the screen
+    context.fillStyle = "gray";
+    context.fillRect(0,0,canvas.width,canvas.height);
+
+    // Draw all objects    
+    for (var obj of g_objs) {
+        drawObject(context, obj);
+    }
+
+    // Update all objects
+    for (var obj of g_objs) {
+        obj.update();
+    }
+
+    // Set timeout to render next frame
+    if (g_animating)
+        window.setTimeout(function() { render(); }, 20);
+}
+
+function drawObject(context, obj) {
+    context.beginPath();
+    context.arc(obj.position[0], obj.position[1], obj.radius, 0, 2 * Math.PI, false);
+    context.fillStyle = obj.color;
+    context.fill();
+    context.lineWidth = 3;
+    context.strokeStyle = "black";
+    context.stroke();
+    context.closePath();
+
+    // Draw circle tag
+    context.font = "18px Arial";
+    context.fillStyle = "black";
+    context.alignText = "center";
+    context.textBaseline = "middle";
+    context.fillText(obj.tag, obj.position[0], obj.position[1]);
+}
+
+function StaticCircle(x, y) {
+    this.radius = getNonZeroRandomValue(20, 40);
+    this.tag = "S";
+    this.color = g_colors[getNonZeroRandomValue(0, g_colors.length - 1)];
+    this.position = [x,y]; 
+
+    this.update = function() {
+        // Nothing to do!
+        return;
+    }
+}
+
+function ActiveCircle(x, y) {
+    this.radius = getNonZeroRandomValue(10, 20);
+    this.tag = "";
+    this.velocity = [getNonZeroRandomValue(-7,7),getNonZeroRandomValue(-7,7)];
+    this.color = g_colors[getNonZeroRandomValue(0, g_colors.length - 1)];
+    this.position = [x,y];
+
+    this.getMagnitude = function() {
+        return Math.sqrt(Math.pow(this.velocity[0],2) + Math.pow(this.velocity[1],2));
+    }
+
+    this.getDirectionOf = function(vector) {
+        var angle = Math.atan2(vector[1], vector[0]);
+        return angle;
+    }
+
+    this.vectorFromDirAndMag = function(direction, magnitude) {
+        var newVector = [0,0];
+        newVector[0] = Math.ceil(magnitude * Math.cos(direction));
+        newVector[1] = Math.ceil(magnitude * Math.sin(direction));
+        return newVector;
+    }
+
+    this.update = function() {
+        // Update position based on velocity
+        this.position[0] += this.velocity[0];
+        this.position[1] += this.velocity[1];
+
+        // Check for collision with walls
+        if (this.position[0] < (0 + this.radius)) {
+            // Left 
+            this.velocity[0] = -this.velocity[0];
+        }
+        if (this.position[0] > (canvasWidth - this.radius)) {
+            // Right
+            this.velocity[0] = -this.velocity[0];
+        }
+        if (this.position[1] < (0 + this.radius)) {
+            // Ceiling
+            this.velocity[1] = -this.velocity[1];
+        }
+        if (this.position[1] > (canvasHeight - this.radius)) {
+            // Floor
+            this.velocity[1] = -this.velocity[1];
+        }
+
+        // Check for collision with static circles
+        var staticCircles = getStaticCircles();
+
+        for (var circle of staticCircles) {
+            var minRange = this.radius + circle.radius;
+            if (distanceBetween(this.position, circle.position) < minRange) {
+                // Collision! Recalulate direction
+                var magnitude = this.getMagnitude();
+                var directionVector = [this.position[0] - circle.position[0], this.position[1] - circle.position[1]];
+                var direction = this.getDirectionOf(directionVector);
+                var newVector = this.vectorFromDirAndMag(direction, magnitude);
+                this.velocity = newVector;
+            }
+        }
+
+        // Check for halting
+        // Due to collective loss of precision, the circles will eventually come to a halt
+        // If they do, just give them a nudge ;)
+        if (this.velocity[0] == 0 && this.velocity[1] == 0) {
+            this.velocity = [getNonZeroRandomValue(-7,7),getNonZeroRandomValue(-7,7)];
+        }
+    }
+}
+
+function distanceBetween(position1, position2) {
+    return Math.sqrt((Math.pow(position2[0] - position1[0], 2)) + (Math.pow(position2[1] - position1[1], 2)));
+}
+
+function getStaticCircles() {
+    var staticCircles = new Array();
+
+    for (var obj of g_objs) {
+        if (obj instanceof StaticCircle) 
+            staticCircles.push(obj);
+    }
+
+    return staticCircles;
+}
+
+function getNonZeroRandomValue(min, max) {
+    var value = 0;
+
+    while (!value) {
+        if (min < 0) 
+            value = Math.floor(min + Math.random() * (Math.abs(min)+max));
+        else value = Math.floor(min + Math.random() * max);
+    }
+
+    return value;
+}
+
+</script>
+<body onload="init()">
+    <h3>HW6 - Canvas Animation v1.0</h3>
+    <canvas id="drawHere" width="800" height="600" style="background-color: gray"></canvas>
+    <br>
+    <input type="button" onclick="btnStartStopClick()" value="Start/Stop Animation"/>
+    <br>
+    Click to add a dynamic object, hold shift and click to a static object
+<html>
