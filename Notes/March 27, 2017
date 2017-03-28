@@ -1,0 +1,45 @@
+Object Serialization
+Why / how / what form?
+
+serialize(object)
+	Produce a data representation of the object that would allow you to reconstruct the object "later" and/or "elsewhere"
+
+// C#
+class ABC : IXMLSerializable
+{
+	int number;
+
+	string ToString() 
+	{
+		return number.ToString();
+	}
+
+	// Deserialization function
+	static ABC FromString(string state) 
+	{
+		ABC obj = new ABC();
+		obj.number = int.Parse(state);
+		return obj;
+	}
+}
+
+XML vs. JSON
+	JSON
+		{
+			"number": 50,
+			"num2": 40,
+			"S": "Hello",
+			"other": { "number" : 55, ... },
+			"type": "ABC"
+		}
+	XML
+		<ABC> 
+			<number writable="true">50</number>
+			<num2>40</num2>
+			<S>Hello</S>
+		</ABC>
+
+
+JSON.stringify(obj)
+
+JSON.parse(string)

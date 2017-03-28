@@ -2,57 +2,6 @@
 // Student ID: 11392441
 //"use strict";
 
-/// Sudoku 9x9 Class
-function Sudoku9x9(arrOf81Values) {
-	this.cellArray2D = new Array();
-
-	// Create 3D cell array from 2D cell array
-	this.cells = [
-		arrOf81Values.slice(0,9), 
-		arrOf81Values.slice(9,18), 
-		arrOf81Values.slice(18,27), 
-		arrOf81Values.slice(27,36), 
-		arrOf81Values.slice(36,45), 
-		arrOf81Values.slice(45,54), 
-		arrOf81Values.slice(54,63), 
-		arrOf81Values.slice(63,72), 
-		arrOf81Values.slice(72) 
-	];
-}
-
-Sudoku9x9.prototype.get3x3 = function(rowIndex, colIndex) {
-	// Get index of upper-left corner of 3x3
-	var row = rowIndex * 3;
-	var col = colIndex * 3
-	var cellArray = new Array();
-	for (var i = 0; i < 3; i++) {
-		for (var j = 0; j < 3; j++) {
-			cellArray.push(this.cells[row + i][col + j]);
-		}
-	}
-	return new Sudoku3x3Block(cellArray);
-}
-
-Sudoku9x9.prototype.getColumn = function(colIndex) {
-	var cellArray = new Array();
-	for (var i = 0; i < 9; i++) {
-		cellArray.push(cells[i][colIndex]);
-	}
-	return new SudokuCellBlock(cellArray);
-}
-
-Sudoku9x9.prototype.getRow = function(rowIndex) {
-	var cellArray = new Array();
-	for (var i = 0; i < 9; i++) {
-		cellArray.push(cells[rowIndex][i]);
-	}
-	return new SudokuCellBlock(cellArray);
-}
-
-Sudoku9x9.prototype.toArray = function() {
-	return this.cellArray2D; 
-}
-
 /// SudokuCell Class
 function SudokuCell(numPossibleValues) {
 
@@ -178,7 +127,12 @@ function SudokuCellCollection(arrOfCells) {
 }
 
 SudokuCellCollection.prototype.allCells = function() {
-	return this.cells;
+	var cellsCopy = new Array();
+
+	for (var cell of this.cells) 
+		cellsCopy.push(cell);
+
+	return cellsCopy;
 }
 
 SudokuCellCollection.prototype.containsCell = function(cell) {
@@ -292,10 +246,13 @@ SudokuCellBlock.prototype = Object.create(SudokuCellCollection.prototype);
 SudokuCellBlock.prototype.trySolve = function() {
 	// If there are any finalized values, remove that value from all other cells
 	var status = { changed: false, solved: true};
+	status.newFinalizedCells = new Array();
 
 	var cells = this.allCells();
 
-	for (var cell of cells){
+	for (var i = 0; i < cells.length; i++){
+		var cell = cells[i];
+
 		if (!cell.isFinalized) {
 			// If a cell is the only cell in the block with a particular value, that must be its value
 			var coll = new SudokuCellCollection(this.allCellsBut(cell));
@@ -304,6 +261,11 @@ SudokuCellBlock.prototype.trySolve = function() {
 				if (!coll.containsPossibility(possibility)){
 					cell.finalizedValue = possibility;
 					status.changed = true;
+
+					cells.push(cell);
+
+					// Also add it to the list of new finalized cells
+					status.newFinalizedCells.push(cell);
 					break;
 				}
 			}
@@ -312,13 +274,27 @@ SudokuCellBlock.prototype.trySolve = function() {
 		}
 
 		// If we have a finalized cell, remove finalizedValue from all other cells
-		for (var updateCell of this.allCellsBut(cell)) {
-			if (updateCell.removePossibility(cell.finalizedValue))
+		var complimentCells = this.allCellsBut(cell);
+		for (var updateCell of complimentCells) {
+			if (updateCell == undefined) {
+				var poop = "poop";
+			}
+			if (updateCell.isFinalized) continue;
+
+			if (updateCell.removePossibility(cell.finalizedValue)) {
 				status.changed = true;
+
+				// If this updated cell is now finalized, we must add it to the array so its 
+				// possibility will be removed from the others
+				if (updateCell.isFinalized) {
+					cells.push(updateCell);
+
+					// Also add it to the list of new finalized cells
+					status.newFinalizedCells.push(updateCell);
+				}
+			}
 		}
 	}
-
-	// If status.changed === true, recursively call again. We might have gotten some new finalized cells!
 
 	// Check to see if block is solved
 	for (var cell of cells) {
@@ -331,10 +307,21 @@ SudokuCellBlock.prototype.trySolve = function() {
 	return status;
 }
 
+SudokuCellBlock.prototype.isSolved = function() {
+	var finalizedValues = this.getFinalizedValues();
+
+	for (var i = 1; i < 10; i++) {
+		if (!finalizedValues.includes(i))
+			return false;
+	}
+	return true;
+}
+
 SudokuCellBlock.prototype.allCellsBut = function(cell) {
 	var cellArray = new Array();
 
-	for (var arrCell of this.allCells()) {
+	var allCells = this.allCells();
+	for (var arrCell of allCells) {
 		if (arrCell !== cell)
 			cellArray.push(arrCell);
 	}
@@ -436,44 +423,239 @@ Sudoku3x3Block.prototype.allCells = function() {
 	return cellArray;
 }
 
+/// Sudoku 9x9 Class
+function Sudoku9x9(arrOf81Values) {
+	this.cellArray2D = new Array();
 
+	// Foreach value in arrOf81Values, create a cell and push to 2D array
+	for (var value of arrOf81Values) {
+		var newCell = new SudokuCell(9);
+		if (value != 0) 
+			newCell.finalizedValue = value;
+		this.cellArray2D.push(newCell);
+	}
 
+	// Create 3D cell array from 2D cell array
+	this.cells = [
+		this.cellArray2D.slice(0,9), 
+		this.cellArray2D.slice(9,18), 
+		this.cellArray2D.slice(18,27), 
+		this.cellArray2D.slice(27,36), 
+		this.cellArray2D.slice(36,45), 
+		this.cellArray2D.slice(45,54), 
+		this.cellArray2D.slice(54,63), 
+		this.cellArray2D.slice(63,72), 
+		this.cellArray2D.slice(72) 
+	];
+}
 
+Sudoku9x9.prototype.get3x3 = function(rowIndex, colIndex) {
+	// Get index of upper-left corner of 3x3
+	var row = rowIndex * 3;
+	var col = colIndex * 3
+	var cellArray = new Array();
+	for (var i = 0; i < 3; i++) {
+		for (var j = 0; j < 3; j++) {
+			cellArray.push(this.cells[row + i][col + j]);
+		}
+	}
+	return new Sudoku3x3Block(cellArray);
+}
 
+Sudoku9x9.prototype.getColumn = function(colIndex) {
+	var cellArray = new Array();
+	for (var i = 0; i < 9; i++) {
+		cellArray.push(this.cells[i][colIndex]);
+	}
+	return new SudokuCellBlock(cellArray);
+}
 
+Sudoku9x9.prototype.getRow = function(rowIndex) {
+	var cellArray = new Array();
+	for (var i = 0; i < 9; i++) {
+		cellArray.push(this.cells[rowIndex][i]);
+	}
+	return new SudokuCellBlock(cellArray);
+}
 
+Sudoku9x9.prototype.toArray = function() {
+	return this.cellArray2D; 
+}
 
+Sudoku9x9.prototype.solve = function() {
+	var status = { solved: false };
+	var collections = new Array();
 
+	// Add each row to collections
+	for (var i = 0; i < 9; i++) {
+		var row = this.getRow(i);
+		collections.push(row);
+	}
 
+	// Add each column to collections
+	for (var i = 0; i < 9; i++) {
+		var column = this.getColumn(i);
+		collections.push(column);
+	}
 
+	// Add each 3x3 block to collections
+	for (var i = 0; i < 3; i++) {
+		for (var j = 0; j < 3; j++) {
+			var block = this.get3x3(i, j);
+			collections.push(block);
+		}
+	}
 
+	// Go through all collections and try to solve them
+	for (var i = 0; i < collections.length; i++) {
+		var collection = collections[i];
+		var result = collection.trySolve();
 
+		// If we ended up solving any cells, add the cells collections back to the main array for further checking
+		if (result.newFinalizedCells.length > 0) {
+			for (var finalizedCell of result.newFinalizedCells) {
+				var adjacentCollections = this.collectionsWithCell(collections, finalizedCell);
+				for (var adjacentCollection of adjacentCollections) {
+					collections.push(adjacentCollection);
+				}
+			}
+		}
+	}
 
+	// At this point, all "obvious" reductions have been made, now we gotta start guess and checking using backtracking
+	// Doing the above steps will significantly reduce the amount of attempts in the following process
+	// Using backtracking algorithm described on http://www.geeksforgeeks.org/backtracking-set-7-suduku/
 
+	// Convert puzzle to 2D Integer array to speed up the backtracking process
+	var intPuzzle = this.to2DIntArray();
 
+	status.solved = this.solve2DIntArray(intPuzzle);
 
+	// If the 2D int puzzle was solved, update our cell board
+	if (status.solved) {
+		for (var row = 0; row < 9; row++) {
+			for (var column = 0; column < 9; column++) {
+				if (this.cells[row][column].isFinalized) continue;
+				this.cells[row][column].finalizedValue = intPuzzle[row][column];
+			}
+		}
 
+		// Just to be sure, validate the board and make sure everything is valid
+		var allBlocks = new Array();
 
+		// Collections currently (likely) has a ton of duplicate references, so we want to filter them out
+		for (var collection of collections) {
+			if (allBlocks.indexOf(collection) < 0) {
+				allBlocks.push(collection);
+			}
+		}
 
+		for (var block of allBlocks) {
+			if (!block.isSolved)
+				status.solved = false;
+		}
+	}
 
+	return status;
+}
 
+Sudoku9x9.prototype.solve2DIntArray = function(array) {
+	var location = [0,0];
 
+	if (!this.findEmptyLocation(array, location))
+		return true;
 
+	var row = location[0];
+	var column = location[1];
 
+	// TODO: Optimize this to not try 1-9, only try possible values from cell
+	for (var number = 1; number < 10; number++) {
+		if (this.verifyLocation(array, row, column, number)) {
+			array[row][column] = number;
 
+			if (this.solve2DIntArray(array))
+				return true;
 
+			array[row][column] = 0;
+		}
+	}
 
+	// Backtrack!
+	return false;
+}
 
+Sudoku9x9.prototype.to2DIntArray = function() {
+	var intArray = [[],[],[],[],[],[],[],[],[]];	// Ugly, find a better way to do this
 
+	for (var i = 0; i < 9; i++) {
+		for (var j = 0; j < 9; j++) {
+			if (this.cells[i][j].isFinalized)
+				intArray[i][j] = this.cells[i][j].finalizedValue;
+			else intArray[i][j] = 0;
+		}
+	}
 
+	return intArray;
+}
 
+Sudoku9x9.prototype.findEmptyLocation = function(array, location) {
+	for (var row = 0; row < 9; row++) {
+		for (var column = 0; column < 9; column++) {
+			if (array[row][column] == 0) {
+				location[0] = row;
+				location[1] = column;
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
+Sudoku9x9.prototype.usedInRow = function(array, row, number) {
+	for (var column = 0; column < 9; column++) {
+		if (array[row][column] == number)
+			return true;
+	}
+	return false;
+}
 
+Sudoku9x9.prototype.usedInColumn = function(array, column, number) {
+	for (var row = 0; row < 9; row++) {
+		if (array[row][column] == number)
+			return true;
+	}
+	return false;
+}
 
+Sudoku9x9.prototype.usedInBlock = function(array, row, column, number) {
+	for (x = 0; x < 3; x++) {
+		for (y = 0; y < 3; y++) {
+			if (array[row+x][column+y] == number)
+				return true;
+		}
+	}
+	return false;
+}
 
+Sudoku9x9.prototype.verifyLocation = function(array, row, column, number) {
+	return (!(this.usedInRow(array, row, number)) && !(this.usedInColumn(array, column, number)) && !(this.usedInBlock(array, row - row%3, column - column%3, number)));
+}
 
+Sudoku9x9.prototype.isSolved = function() {
+	for (var cell of this.cellArray2D) {
+		if (!cell.isFinalized) 
+			return false;
+	}
+	return true;
+}
 
+Sudoku9x9.prototype.collectionsWithCell = function(collections, cell) {
+	var collectionsWithCell = new Array();
 
+	for (var collection of collections) {
+		if (collection.containsCell(cell))
+			collectionsWithCell.push(collection);
+	}
 
-
-
+	return collectionsWithCell;
+}

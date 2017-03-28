@@ -1,0 +1,24 @@
+Exam Reflection
+
+Object.seal
+	Can't add or remove properties
+	Can still change values of all writable properties
+
+Object.freeze
+	Seal + no write
+
+Immutability
+	Not a strong concensus on definition
+
+Object.create(obj)
+	Creates and returns a new object who's prototype is set to the given object
+	ClassA.prototype = object.create(ClassB.prototype);
+	___________________
+	| classA.prototype|
+	-------------------			____________________
+	|    __proto__    |   ----> | classB.prototype |
+	-------------------			--------------------
+								|	 __proto__     |
+								--------------------
+
+var obj = { value: "101" }

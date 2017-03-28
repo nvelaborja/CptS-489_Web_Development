@@ -1,0 +1,70 @@
+Node.js stuff
+
+// Old hello world
+
+var http = require("http");
+var handler = function(request, )
+...
+
+// New file system stuff
+var fs = require('fs');
+
+if (process.argv.length <= 2) {
+	console.log("Usage: " + __filename + " path/to/directory");
+	process.exit(-1);
+}
+
+var path = process.argv[2];
+
+var simpleVersion = true;
+
+if (simpleVersion) {
+	fs.readdir(path, function(err, items) {
+		console.log(items);
+
+		for (var i = 0; i < items.length; i++) {
+			console.log(items[i]);
+		}
+	});
+}
+else {
+	fs.readdir (path, function(err, items) {
+		for (var i = 0; i < items.length; i++) {
+			var file = path + '/' + items[i];
+
+			console.log("Start: " + file);
+
+			fs.stat(file, function(f) {
+				console.log(f);
+				console.log(stats["size"] + " bytes");
+			}(file));
+		}
+	});
+}
+
+// Web service Demo
+
+var http = require("http");
+var fs = require("fs");
+
+if (process.argv.length <= 2) {
+	console.log("Usage: " + __filename + " path/to/directory");
+	process.exit(-1);
+}
+
+var path = process.argv[2];
+
+var handler = function(request, response) {
+	//TODO
+	response.writeHead(200, {"Content-Type": "text/plain"});
+
+	var result = "File List:":
+	var items = fs.readdirSync(path)
+	
+	for (var i = 0; i < items.length; i++) {
+		result += (items[i] + "\n");
+	}
+
+	response.end(result);
+}
+http.createServer(handler).listen(8080);

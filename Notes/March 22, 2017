@@ -1,0 +1,28 @@
+More exam reflection
+
+var arr = new Array();
+
+for (var index = 0; index < 5; index++) {
+	var temp = index;
+	arr[index] = function () {
+		alert(temp);
+	}
+}
+return arr;
+
+FIX
+
+function A() {
+	
+	var arr = new Array();
+
+	for (var index = 0; index < 5; index++) {
+		arr[index] = B(index);
+	}
+
+	return arr;
+}
+
+function B(index) {
+	return function() { alert(index); };
+}
