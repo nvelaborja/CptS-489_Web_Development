@@ -1,0 +1,136 @@
+<!--
+	Nathan VelaBorja
+	April 15, 2017
+	CptS 489 HW 8
+	camUploader.html
+	Followed tutorial on developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
+-->
+
+<!doctype html>
+
+<style>
+
+.centered {
+	position: fixed;
+	left: 50%;
+}
+
+</style>
+
+<script>
+
+(function() {
+	var width = 320;
+	var height = 0;
+	var streaming = false;
+	var video = null;
+	var canvas = null;
+	var photo = null;
+	var startButton = null;
+
+	function startup() {
+		video = document.getElementById("video");
+		canvas = document.getElementById("canvas");
+		photo = document.getElementById("photo");
+		startButton = document.getElementById("startButton");
+
+		navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+
+		navigator.getMedia({video: true, audio: false}, 
+			function(stream) {
+				if (navigator.mozGetUserMedia) {
+					video.mozSrcObject = stream;
+				} else {
+					var vendorURL = window.URL || window.webkitURL;
+					video.src = vendorURL.createObjectURL(stream);
+				}
+				video.play();
+			}, function(err) {
+				console.log("Error. " + err);
+			});
+
+		video.addEventListener("canplay", function(ev) {
+			if (!streaming) {
+				height = video.videoHeight / (video.videoWidth/width);
+
+				video.setAttribute("width", width);
+				video.setAttribute("height", height);
+				canvas.setAttribute("width", width);
+				canvas.setAttribute("height", height);
+				streaming = true;
+			}
+		}, false);
+
+		startButton.addEventListener("click", function(ev) {
+			this.disabled = true;
+			render();
+		}, false);
+
+		clearphoto();
+	}
+
+	function takepicture() {
+		var context = canvas.getContext("2d");
+		if (width && height) {
+			canvas.width = width;
+			canvas.height = height;
+			context.drawImage(video, 0, 0, width, height);
+		}
+	}
+
+	function clearphoto() {
+		var context = canvas.getContext("2d");
+		context.fillStyle = "#AAA";
+		context.fillRect(0, 0, canvas.width, canvas.height);
+	}
+
+	function render()
+	{   
+	    // Get image
+	    takepicture();
+
+	    // Send it to server
+	    var dataURL = canvas.toDataURL("image/jpeg", 0.1);
+	    var http = new XMLHttpRequest();
+	    var date = new Date();
+	    var ms = date.getTime();
+	    http.addEventListener("readystatechange", function(e) {
+	    	if (this.readyState == 4) {
+	    		render();
+	    	}
+	    });
+        http.open("POST", "http://localhost:8080/" + ms + ".jpeg");
+        http.setRequestHeader("Content-Type", "image/jpeg");
+        http.send(dataURL);
+
+        //http.abort();
+
+        console.log("Posting image to " + "http://localhost:8080/" + ms + ".jpeg")
+
+	    // Set timeout to render next frame
+	    //window.setTimeout(function() { render(); }, 100);
+	}
+
+	window.addEventListener("load", startup, false);
+})();
+
+</script>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>VelaBorja's Web Camera Uploader</title>
+  <meta name="author" content="Nathan VelaBorja">
+</head>
+
+<body>
+	<div class="centered">
+		<video id="video">Video stream not available.</video>
+		<button id="startButton">Start streaming</button>
+		<canvas id="canvas"></canvas>
+	</div>
+
+</body>
+
+</html>

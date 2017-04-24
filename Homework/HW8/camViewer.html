@@ -1,0 +1,73 @@
+<!--
+	Nathan VelaBorja
+	April 15, 2017
+	CptS 489 HW 8
+	camViewer.html
+-->
+
+<!doctype html>
+
+<style>
+
+.centered {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+}
+
+</style>
+
+<script>
+
+
+(function() {
+	var canvas = null;
+	var serviceURL = null;
+	var image = null;
+
+	function startup() {
+		serviceURL = "http://192.168.88.124:8080/";
+		image = document.getElementById("image");
+		render();
+	}
+
+	function render()
+	{   
+	    // Get image
+	    var http = new XMLHttpRequest();
+	    http.addEventListener("loadend", function() {
+			var data = http.response;
+			image.src = data;
+		});
+
+	    var date = new Date();
+	    var ms = date.getTime();
+		http.open("GET", serviceURL + ms + ".jpeg");
+		http.send();
+		
+	    // Set timeout to render next frame
+	    window.setTimeout(function() { render(); }, 33);
+	}
+
+	window.addEventListener("load", startup, false);
+})();
+
+
+
+</script>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>VelaBorja's Web Camera Viewer</title>
+  <meta name="author" content="Nathan VelaBorja">
+</head>
+
+<body>
+
+<img id="image" width="320" height="240" class="centered">
+
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+// HW demo
+
+var fs = require("fs");
+var http = require("http");
+
+var hitCounts = new Object();
+
+var handler = function(request, response) {
+	response.writeHead(200, {"Content-Type": "text/html"});
+
+	//if (request.url != "/") {
+	//	response.end("Not counting on non-root url");
+	//	return;
+	//}
+
+	response.write("<html><body>");
+
+	// Log the requested url
+	console.log();
+
+	var hitCount = 1;
+	if (request.url in hitCounts) {
+		hitCount = hitCounts[request.url] + 1;
+	}
+	hitCounts[request.url] = hitCount;
+
+	// OR hitCount = hitCounts[request.url] || 0;
+	// OR if (hitCounts[request.url]) ...
+
+	// Try to read the content from "hitcount.dat"
+	/*
+	var hitcount = 0;
+	try {
+		hitcount = fs.readFileSync("hitcount.dat");
+	}
+	catch (ex) { }
+
+	// Incremement the counter and write new value to file
+	hitcount++;
+	fs.writeFileSync("hitcount.dat", hitcount.toString());
+	*/
+
+	// Show the hit count on the page
+	response.write("Hit count for " + request.url + ": " + hitCount);
+
+	response.end("</body></html>");
+};
+
+http.createServer(handler).listen(8080);
+
+
+// Server Side Storage example
+
+var fs...
+var http...
+var data = "(default)";
+
+var handler = function(request, response) {
+	response.writeHead(200, {"Content-Type": "text/html", "Access-Control-Allow-Origin": "*"});
+
+	if (request.method == "GET") {
+		response.write("<html><body>");
+		response.write(data);
+		response.write("</body></html>");
+	}
+	else if (request.method == "POST") {
+		request.on("data", function(chunk) {
+			console.log("Data" + chunk);
+		});
+	}
+};
+
+http.createServer(handler).listen(8080);
+console.log('Server running at http://127.0.0.1:8080/');
+
+// On client
+var req = new ...
+req.open("POST", "http://localhost:8080");
+req.send("Hello from client!");
+
+
+
+
+
+
+
+
+

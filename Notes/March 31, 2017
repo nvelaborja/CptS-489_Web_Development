@@ -1,0 +1,120 @@
+Server-side app requirements
+	Provide lists of files (in xml or JSON) to client(s)
+	Provide streaming file transfer
+
+// Demo
+
+var http = require("http");
+var fs = require("fs");
+
+// First make sure we have a runtime arg for the directory
+if (process.argv.length <= 2) {
+	console.log("Usage....");
+	process.exit(-1);
+}
+
+var path = process.argv[2];
+
+var handler = funciton(request, response) {
+
+	// url must start with "/lists" or "/files"
+	if (request.url.length < 6) {
+		response.writeHead(200, {"Content-Type" : "text/html"});
+		response.end("<html><h1>400 Bad Request</h1></html>");
+		return;
+	}
+
+	// Parse some stuff from the URL
+	var url = request.url.toLowerCase();
+	var service = url.substr(0,6);
+	url = (url.length == 6) ? "/" : url.substr(6);
+
+	// Handle "/lists" first
+
+	if (service == "/lists") {
+		response.writeHead(200, {"Content-Type": "text/xml"});
+
+		// Get actual path
+		var actualPath = pathNodeJS.join(path, url);
+		actualPath = decodeURI(actualPath);
+
+		var xml = "<file_list>\n";
+
+		var items = fs.readdirSync(path);
+
+		for (var i = 0; i < items.length; i++) {
+
+			// TODO: validate the request directory / path. 
+
+			var file = pathNodeJS.join(actualPath, items[i]); // items[i];
+			console.log("About to stat " + file);
+
+			var stats = fs.statSync(file);
+			var fileOrDir;
+
+			if (stats.isDirectory()) {
+				fileOrDir = "directory";
+			}
+			else if (stats.isFile()) {
+				fileOrDir = "file";
+			}
+			else {
+				// Not file or dir, skip
+				// ex: symbolic links, etc.
+				continue;
+			}
+			xml += 
+
+		}
+
+	}
+
+	if (service == "/files") {
+		// Get the file extension
+		var lastDotIndex = actualPath.lastIndexOf(".");
+		var ext = "";
+		if (lastDotIndex >= 0) {
+			ext = actualPath.substr(lastDotIndex).toLowerCase();
+		}
+
+		// Determine the content type from extension
+		var contentType;
+		if (ext == ".html" || ext == ".htm") { contentType = "text/html"; }
+		if .xml - text/xml
+		if pdf - application/pdf
+		gif - image/gif
+		jpg - image/jpeg
+		json = application/json
+		else = application/octet-stream
+
+		var allAtOnce = false;
+		if (allAtOnce) {
+
+			// Read the entire file
+			var buf = fs.readFileSync(actualPath);
+
+			// Write back file data
+			response.writeHead(200, {"Content-Type": contentType});
+			response.end(buf);
+		}
+		else {
+			// Open the read stream for the file
+			var readS = fs.createReadStream(actualPath);
+
+			// Write back file data
+			response.writeHead(200, {"Content-Type": contentType});
+			readS.on('data', function(chunk) {
+			response.write(chunk);
+			});
+			readS.on('end', function() { response.end(); });
+		}
+		return;
+	}
+	else {
+
+	}
+}
+
+...
+
+

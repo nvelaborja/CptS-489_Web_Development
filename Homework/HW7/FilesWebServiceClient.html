@@ -1,0 +1,188 @@
+<!-- **********************************
+	Nathan VelaBorja - 11392441
+	April 11, 2017
+	CptS 489 HW 7
+*********************************** -->
+
+<html>
+<style>
+
+	table {
+		width:100%;
+		border: 1px solid black;
+	}
+
+	tr:nth-child(even) {
+		background-color: #CCCCCC;
+	}
+
+	#tableHeader *{
+		border: 1px solid black;
+		background-color: lightblue;
+	}
+
+	img {
+		margin: 4px;
+		margin-right: 10px;
+	}
+
+	button {
+		margin: 5px;
+	}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script language="JavaScript">
+
+// For simplicity, use this hard-coded URL as the base URL for your 
+// requests. Use XMLHttpRequest and have the URL be g_serviceURL 
+// plus a concatenated portion as appropriate.
+var g_serviceURL = "http://localhost:8080/";
+
+function PageLoaded()
+{
+	var req = new XMLHttpRequest();
+	req.addEventListener("loadend", function() {
+		CreateDirView(req.responseXML);
+	});
+	req.open("GET", g_serviceURL);
+	req.send();
+}
+
+function CreateDirView(xml) {
+	// Get all objects
+	var files = [];
+	var dirs = [];
+	GetObjects(xml, files, dirs);
+
+	// Create a table!
+	var dirView = document.getElementById("dirView");
+	var tableHTML = "<table id='table'>";
+	tableHTML += "<tr id='tableHeader'><th>Name</th><th>Size</th><th>Last Accessed</th><th>Created</th></tr>";
+
+	// Add rows for each object
+	for (var dir of dirs) {
+		tableHTML += MakeDirRow(dir);
+	}
+
+	for (var file of files) {
+		tableHTML += MakeFileRow(file);
+	}
+
+	// End table
+	tableHTML += "</table>";
+
+	dirView.innerHTML = tableHTML;
+
+}
+
+function ToggleDir(button) {
+	if (button.innerHTML == "+") {
+
+		var req = new XMLHttpRequest();
+		req.addEventListener("loadend", function() {
+		
+			var xml = req.responseXML;
+			var table = document.getElementById("table");
+			var parentRow = button.parentElement.parentElement;
+			var rowIndex = button.parentElement.parentElement.rowIndex;
+			var files = [];
+			var dirs = [];
+			GetObjects(xml, files, dirs);
+
+			for (var i = 0; i < dirs.length; i++) {
+				var row = table.insertRow(rowIndex + 1 + i);
+				var rowHtml = MakeDirRow(dirs[i]);
+				rowHtml = rowHtml.slice(4, rowHtml.length - 5);
+				row.innerHTML = rowHtml;
+				row.className = (parentRow.className + " " + button.name);
+			}
+
+			for (var i = 0; i < files.length; i++) {
+				var row = table.insertRow(rowIndex + 1 + i);
+				var rowHtml = MakeFileRow(files[i]);
+				rowHtml = rowHtml.slice(4, rowHtml.length - 5);
+				row.innerHTML = rowHtml;
+				row.className = (parentRow.className + " " + button.name);
+			}
+
+			button.innerHTML = "-";
+		
+
+		});
+		req.open("GET", g_serviceURL + button.name);
+		req.send();
+	}
+	else {
+		// Delete rows 
+		var rowsToDelete = document.getElementsByClassName(button.name);
+
+		while (rowsToDelete.length > 0) {
+			var row = rowsToDelete[0];
+			row.parentNode.removeChild(row);
+		}
+
+		button.innerHTML = "+";
+	}
+}
+
+function MakeDirRow(dir) {
+	var depth = dir.ref.split("/").length - 1;
+	var width = 5 + (10 * depth);
+	var dirIcon = "<img src='Folder-50.png' alt='file' width='20' style='margin-left: " + width + "px;'>";
+	var button = "<button name='" + dir.ref + "' onclick='ToggleDir(this)'>+</button>";
+	var rowString = "<tr>";
+	rowString += "<td>" + dirIcon + dir.title + button + "</td>" + "<td>" + dir.size + "</td>" + "<td>" + dir.accessed + "</td>" + "<td>" + dir.created + "</td>";
+	rowString += "</tr>";
+	return rowString;
+}
+
+function MakeFileRow(file) {
+	var depth = file.ref.split("/").length - 1;
+	var width = 5 + (10 * depth);
+	var fileIcon = "<img src='File-48.png' alt='file' width='20' style='margin-left: " + width + "px;'>";
+	var rowString = "<tr>";
+
+	rowString += "<td>" + fileIcon + "<a href='" + (g_serviceURL + file.ref) + "' target='_blank'>" + file.title + "</a></td>" + "<td>" + file.size + "</td>" + "<td>" + file.accessed + "</td>" + "<td>" + file.created + "</td>";
+	rowString += "</tr>";
+	return rowString;
+}
+
+function GetObjects(xml, files, dirs) {
+	var filesXml = xml.getElementsByTagName("file");
+	var dirsXml = xml.getElementsByTagName("dir");
+
+	for (var i = 0; i < dirsXml.length; i++) {
+		var dir = new Object();
+
+		dir.type = "dir";
+		dir.title = dirsXml[i].childNodes[0].innerHTML;
+		dir.size = dirsXml[i].childNodes[1].innerHTML;
+		dir.accessed = dirsXml[i].childNodes[2].innerHTML;
+		dir.created = dirsXml[i].childNodes[3].innerHTML;
+		dir.ref = dirsXml[i].childNodes[4].innerHTML;
+
+		dirs.push(dir);
+	}
+
+	for (var i = 0; i < filesXml.length; i++){
+		var file = new Object();
+
+		file.type = "file";
+		file.title = filesXml[i].childNodes[0].innerHTML;
+		file.size = filesXml[i].childNodes[1].innerHTML;
+		file.accessed = filesXml[i].childNodes[2].innerHTML;
+		file.created = filesXml[i].childNodes[3].innerHTML;
+		file.ref = filesXml[i].childNodes[4].innerHTML;
+
+		files.push(file);
+	}
+}
+
+</script>
+<body onload="PageLoaded()">
+	<div id="dirView">
+		(loading...)
+	</div>
+</body>
+</html>

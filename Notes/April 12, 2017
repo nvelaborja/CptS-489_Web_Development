@@ -1,0 +1,75 @@
+JavaScript APIs
+
+W3C Stats Descriptors
+
+Working Draft 
+	Published for review by the community
+
+Cadidate Recommendation
+	The W3C believes has been widely reviewed and satisfies the Working Group's ...
+
+Proposed Recommendation
+	A mature technical report that, after wide review for soundness and implementablility, W3C has sent to the Advisory Committee for final endoresmenet
+
+W3C Recommendation
+	A specification or set of guidelines that, after extensive consensus-building, has received the endoresement of W3C Member and the Director
+
+
+Example APIs
+
+	Battery API
+
+		Purpose: get battery status
+		MDN Stats: CR
+		Supported On: Chrome (desktop and android) , FireFox
+		BatteryManager object
+			charging (Boolean)
+			chargeTime (number)
+			dischargingTime (number)
+			level (number)
+				0.0 - 1.0
+
+			window.navigator.getBattery();
+				returns a Promise object that can be used to get the BatteryManager
+
+	Promise Object
+		used for asynchronous computation. A Promise represents a value which may be available now, in the future, or never
+		Many APIs access "system" functionality 
+		User many not want to give browser access to these services / devices
+		When promises are used in code, the user may be prompted by the browser to allow access
+			Whenever the user decides, then the promise is resolved
+		promiseObject.then function takes 2 functions as parameters
+			first is the function to call if promise is fulfilled
+			second is the function to call if promise is rejected
+
+
+	Geolocation API
+
+		Not fully finalized but seems to be supported currently on all major browsers
+		Unlike the battery API:
+			promises are not involved
+			browsers WILL prompt for permission
+			access through already instantiated object: navigator.geolocation
+
+		PositionOptions object can be passed to getCurrentPosition and watchPosition
+			enableHighAccuracy Boolean property
+			timeout property
+		More accurate location determination may take a lot of device power in comparison with the less accurate method
+		Data stored is a sorted array of objects that have properties
+			latitude (Number)
+			longitude (Number)
+			timestamp (Number)
+
+		Simple App
+			probably set accuracy to high
+			leave it on as you walk/drive around campus/town
+			Store the data for where you are every few seconds
+				Storage API to be discussed next
+			Analyze data to find our something interesting
+				Algorithm to approximate percentage of paths traveled more than once
+
+
+
+
+
+

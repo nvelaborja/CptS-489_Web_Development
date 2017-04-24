@@ -1,0 +1,8 @@
+var ta = document.createElement("textarea");
+document.body.appendChild(ta);
+ta.value = "Hello";
+// ta.style.color = "red";
+// ta.innerHTML = "<b>H</b>ello";
+// Can't use textarea!
+
+<div contenteditable="true"></div>

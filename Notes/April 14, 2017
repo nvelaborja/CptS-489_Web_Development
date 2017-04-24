@@ -1,0 +1,55 @@
+More APIs
+
+Storage API
+	window.localStorage object
+		instance of Storage object
+	MDN status: REC
+	Idea: Storage that persists after closing / leaving the page
+		Uses a file system managed by the browser
+
+	To store data: localStorage.setItem(keyName, keyValue);
+		key name and value are expected to be strings
+	Example
+		localStorage.setItem("myData", "Some Value");
+		var savedData = localStorage.getItem("myData");
+		if (savedData) ...
+	localStorage.clear();
+
+Typed Arrays
+	Standard in ES 6
+	Much more like C/C++ arrays
+		Can even simulate casting a pointer to a different type
+	Wrap around ArrayBuffer object
+		The ArrayBuffer object is used to represent a generic, fixed-length raw binary data buffer.
+		Allocated with a size in bytes and does not change size after that
+		No push, pop, or other operations
+
+	C++ Code
+		void* data = malloc(8);
+		int* i32Arr = (int*)data;
+		unsigned char* u8Arr = (unsigned char*)data;
+
+	Equivalent JS
+		var data = new ArrayBuffer(8);
+		var i32Arr = new Int32Array(data);
+		var u8Arr = new Uint8Array(data);
+
+	i32Arr.length == 2
+	u8Arr.length == 8
+
+	i32Arr[0] = 17;
+
+	u8Arr[0]   			17, 0, 0, 0 for least significant byte first  OR     0, 0, 0, 17 most significant byte first
+	u8Arr[1]
+	u8Arr[2]
+	u8Arr[3]
+
+	Types
+		Int8Array
+		Uint8
+		Uint8Clamped
+		Int16
+		Int32
+		Uint32
+		Float32
+		Float64
